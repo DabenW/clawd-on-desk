@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <clipPath id="body-clip">
+      <rect x="6" y="6" width="12" height="1" />
+      <rect x="5" y="7" width="14" height="14" />
+      <rect x="6" y="21" width="12" height="1" />
+    </clipPath>
+    <style>
+      .breathe-anim {
+        transform-origin: 12px 23px;
+        animation: breathe 3.2s infinite ease-in-out;
+      }
+
+      .eyes-blink {
+        transform-origin: 12px 11px;
+        animation: eye-blink 4s infinite ease-in-out;
+      }
+
+      #eyes-js {
+        transition: transform 0.2s ease-out;
+      }
+
+      /* Arm waving — fast 3 waves then pause, loop */
+      .arm-wave {
+        transform-origin: 5px 15px;
+        animation: peek-wave 3s infinite ease-in-out;
+      }
+
+      @keyframes breathe {
+        0%, 100% { transform: scale(1, 1) translate(0, 0); }
+        50% { transform: scale(1.02, 0.98) translate(0, 0.5px); }
+      }
+
+      @keyframes eye-blink {
+        0%, 10%, 100% { transform: scaleY(1); }
+        5% { transform: scaleY(0.1); }
+      }
+
+      /* Fast 3 waves (~0.9s) then still (~2.1s), loop */
+      @keyframes peek-wave {
+        0% { transform: rotate(0deg); }
+        5% { transform: rotate(35deg); }
+        10% { transform: rotate(-15deg); }
+        15% { transform: rotate(35deg); }
+        20% { transform: rotate(-15deg); }
+        25% { transform: rotate(35deg); }
+        30%, 100% { transform: rotate(0deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- Entire character leaning -->
+  <g transform="rotate(-12, 12, 23)">
+
+    <!-- Legs -->
+    <g fill="#111111">
+      <rect x="7" y="21" width="2" height="2"/>
+      <rect x="15" y="21" width="2" height="2"/>
+    </g>
+
+    <!-- Upper Body -->
+    <g id="body-js">
+      <g class="breathe-anim">
+        <!-- Tail -->
+        <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+        <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+        <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+        <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+        <!-- Ears -->
+        <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+        <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+        <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+        <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+        
+        <!-- Head and Torso -->
+        <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+        <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+        <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+        <!-- Left Arm — continuous big wave -->
+        <g class="arm-wave">
+          <rect x="3" y="14" width="2" height="2" fill="#111111"/>
+        </g>
+
+        <!-- Right Arm -->
+        <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+
+        <!-- Eyes: JS translate wrapper + CSS blink -->
+        <g clip-path="url(#body-clip)">
+          <g id="eyes-js" fill="#FFFFFF">
+            <g class="eyes-blink">
+              <!-- Left Eye -->
+              <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+              <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+              <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+              <!-- Right Eye -->
+              <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+              <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+              <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

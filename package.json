@@ -1,8 +1,11 @@
 {
-  "name": "clawd-on-desk",
+  "name": "catpaw-on-desk",
   "version": "0.5.9",
   "description": "A desktop pet that reacts to your Claude Code sessions in real-time.",
   "main": "src/main.js",
+  "bin": {
+    "catpaw": "bin/catpaw.js"
+  },
   "scripts": {
     "start": "node launch.js",
     "build": "electron-builder --win",
@@ -11,10 +14,11 @@
     "build:all": "electron-builder --win --mac --linux",
     "test": "node --test test/*.test.js",
     "install:gemini-hooks": "node hooks/gemini-install.js",
-    "install:cursor-hooks": "node hooks/cursor-install.js"
+    "install:cursor-hooks": "node hooks/cursor-install.js",
+    "install:catpaw-hooks": "node hooks/catpaw-install.js"
   },
   "keywords": [
-    "clawd",
+    "catpaw",
     "desktop-pet",
     "electron",
     "claude-code"
@@ -23,8 +27,8 @@
   "license": "MIT",
   "type": "commonjs",
   "build": {
-    "appId": "com.clawd.on-desk",
-    "productName": "Clawd on Desk",
+    "appId": "com.catpaw.on-desk",
+    "productName": "CatPaw on Desk",
     "mac": {
       "icon": "assets/icon.png",
       "target": [
@@ -44,7 +48,7 @@
     "win": {
       "icon": "assets/icon.ico",
       "signAndEditExecutable": false,
-      "artifactName": "Clawd-on-Desk-Setup-${version}.${ext}",
+      "artifactName": "CatPaw-on-Desk-Setup-${version}.${ext}",
       "target": [
         {
           "target": "nsis",
@@ -87,7 +91,9 @@
       "assets/tray-icon*.png",
       "hooks/**/*",
       "extensions/**/*",
-      "agents/**/*"
+      "agents/**/*",
+      "!bin/**/*",
+      "!assets/svg/old/**/*"
     ],
     "asarUnpack": [
       "hooks/**/*",
@@ -99,11 +105,12 @@
         "to": "icon.ico"
       }
     ],
+    "afterPack": "scripts/afterPack.js",
     "publish": [
       {
         "provider": "github",
         "owner": "rullerzhou-afk",
-        "repo": "clawd-on-desk"
+        "repo": "catpaw-on-desk"
       }
     ]
   },

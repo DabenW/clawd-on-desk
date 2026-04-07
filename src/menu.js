@@ -11,7 +11,7 @@ const isLinux = process.platform === "linux";
 const fs = require("fs");
 const os = require("os");
 const AUTOSTART_DIR = path.join(os.homedir(), ".config", "autostart");
-const AUTOSTART_FILE = path.join(AUTOSTART_DIR, "clawd-on-desk.desktop");
+const AUTOSTART_FILE = path.join(AUTOSTART_DIR, "catpaw-on-desk.desktop");
 
 function linuxGetOpenAtLogin() {
   try { return fs.existsSync(AUTOSTART_FILE); } catch { return false; }
@@ -27,7 +27,7 @@ function linuxSetOpenAtLogin(enable) {
     const desktop = [
       "[Desktop Entry]",
       "Type=Application",
-      "Name=Clawd on Desk",
+      "Name=CatPaw on Desk",
       `Exec=${execCmd}`,
       "Hidden=false",
       "NoDisplay=false",
@@ -37,7 +37,7 @@ function linuxSetOpenAtLogin(enable) {
       fs.mkdirSync(AUTOSTART_DIR, { recursive: true });
       fs.writeFileSync(AUTOSTART_FILE, desktop);
     } catch (err) {
-      console.warn("Clawd: failed to write autostart entry:", err.message);
+      console.warn("CatPaw: failed to write autostart entry:", err.message);
     }
   } else {
     try { fs.unlinkSync(AUTOSTART_FILE); } catch {}
@@ -62,9 +62,10 @@ const i18n = {
     miniMode: "Mini Mode",
     exitMiniMode: "Exit Mini Mode",
     sleep: "Sleep (Do Not Disturb)",
-    wake: "Wake Clawd",
+    wake: "Wake CatPaw",
     startOnLogin: "Start on Login",
     startWithClaude: "Start with Claude Code",
+    startWithCatPaw: "Start with CatPaw IDE",
     showInMenuBar: "Show in Menu Bar",
     showInDock: "Show in Dock",
     language: "Language",
@@ -74,7 +75,7 @@ const i18n = {
     updateAvailableMsg: "v{version} is available. Download and install now?",
     updateAvailableMacMsg: "v{version} is available. Open the download page?",
     updateNotAvailable: "You're Up to Date",
-    updateNotAvailableMsg: "Clawd v{version} is the latest version.",
+    updateNotAvailableMsg: "CatPaw v{version} is the latest version.",
     updateDownloading: "Downloading Update…",
     updateReady: "Update Ready",
     updateReadyMsg: "v{version} has been downloaded. Restart now to update?",
@@ -98,8 +99,8 @@ const i18n = {
     sessionMinAgo: "{n}m ago",
     sessionHrAgo: "{n}h ago",
     soundEffects: "Sound Effects",
-    showPet: "Show Clawd",
-    hidePet: "Hide Clawd",
+    showPet: "Show CatPaw",
+    hidePet: "Hide CatPaw",
     toggleShortcut: "Toggle Shortcut: {shortcut}",
     quit: "Quit",
   },
@@ -111,9 +112,10 @@ const i18n = {
     miniMode: "极简模式",
     exitMiniMode: "退出极简模式",
     sleep: "休眠（免打扰）",
-    wake: "唤醒 Clawd",
+    wake: "唤醒 CatPaw",
     startOnLogin: "开机自启",
     startWithClaude: "随 Claude Code 启动",
+    startWithCatPaw: "随 CatPaw IDE 启动",
     showInMenuBar: "在菜单栏显示",
     showInDock: "在 Dock 显示",
     language: "语言",
@@ -123,7 +125,7 @@ const i18n = {
     updateAvailableMsg: "v{version} 已发布，是否下载并安装？",
     updateAvailableMacMsg: "v{version} 已发布，是否打开下载页面？",
     updateNotAvailable: "已是最新版本",
-    updateNotAvailableMsg: "Clawd v{version} 已是最新版本。",
+    updateNotAvailableMsg: "CatPaw v{version} 已是最新版本。",
     updateDownloading: "正在下载更新…",
     updateReady: "更新就绪",
     updateReadyMsg: "v{version} 已下载完成，是否立即重启以完成更新？",
@@ -147,8 +149,8 @@ const i18n = {
     sessionMinAgo: "{n}分钟前",
     sessionHrAgo: "{n}小时前",
     soundEffects: "音效",
-    showPet: "显示 Clawd",
-    hidePet: "隐藏 Clawd",
+    showPet: "显示 CatPaw",
+    hidePet: "隐藏 CatPaw",
     toggleShortcut: "切换快捷键: {shortcut}",
     quit: "退出",
   },
@@ -171,7 +173,7 @@ module.exports = function initMenu(ctx) {
       icon = nativeImage.createFromPath(path.join(__dirname, "../assets/tray-icon.png")).resize({ width: 32, height: 32 });
     }
     ctx.tray = new Tray(icon);
-    ctx.tray.setToolTip("Clawd Desktop Pet");
+    ctx.tray.setToolTip("CatPaw Desktop Pet");
     buildTrayMenu();
   }
 
@@ -299,7 +301,24 @@ module.exports = function initMenu(ctx) {
               unregisterAutoStart();
             }
           } catch (err) {
-            console.warn("Clawd: failed to toggle auto-start hook:", err.message);
+            console.warn("CatPaw: failed to toggle auto-start hook:", err.message);
+          }
+          ctx.savePrefs();
+          buildTrayMenu();
+          buildContextMenu();
+        },
+      },
+      {
+        label: t("startWithCatPaw"),
+        type: "checkbox",
+        checked: ctx.autoStartWithCatPaw,
+        click: (menuItem) => {
+          ctx.autoStartWithCatPaw = menuItem.checked;
+          try {
+            const { writeCatPawAutoStartPref } = require("../hooks/catpaw-install.js");
+            writeCatPawAutoStartPref(ctx.autoStartWithCatPaw);
+          } catch (err) {
+            console.warn("CatPaw: failed to toggle CatPaw auto-start:", err.message);
           }
           ctx.savePrefs();
           buildTrayMenu();

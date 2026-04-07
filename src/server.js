@@ -6,8 +6,8 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const {
-  CLAWD_SERVER_HEADER,
-  CLAWD_SERVER_ID,
+  CATPAW_SERVER_HEADER,
+  CATPAW_SERVER_ID,
   DEFAULT_SERVER_PORT,
   clearRuntimeConfig,
   getPortCandidates,
@@ -24,7 +24,7 @@ function getHookServerPort() {
   return activeServerPort || readRuntimePort() || DEFAULT_SERVER_PORT;
 }
 
-function syncClawdHooks() {
+function syncClaudeHooks() {
   try {
     const { registerHooks } = require("../hooks/install.js");
     const { added, updated, removed } = registerHooks({
@@ -33,10 +33,10 @@ function syncClawdHooks() {
       port: getHookServerPort(),
     });
     if (added > 0 || updated > 0 || removed > 0) {
-      console.log(`Clawd: synced hooks (added ${added}, updated ${updated}, removed ${removed})`);
+      console.log(`CatPaw: synced hooks (added ${added}, updated ${updated}, removed ${removed})`);
     }
   } catch (err) {
-    console.warn("Clawd: failed to sync hooks:", err.message);
+    console.warn("CatPaw: failed to sync hooks:", err.message);
   }
 }
 
@@ -45,10 +45,10 @@ function syncGeminiHooks() {
     const { registerGeminiHooks } = require("../hooks/gemini-install.js");
     const { added, updated } = registerGeminiHooks({ silent: true });
     if (added > 0 || updated > 0) {
-      console.log(`Clawd: synced Gemini hooks (added ${added}, updated ${updated})`);
+      console.log(`CatPaw: synced Gemini hooks (added ${added}, updated ${updated})`);
     }
   } catch (err) {
-    console.warn("Clawd: failed to sync Gemini hooks:", err.message);
+    console.warn("CatPaw: failed to sync Gemini hooks:", err.message);
   }
 }
 
@@ -57,18 +57,30 @@ function syncCursorHooks() {
     const { registerCursorHooks } = require("../hooks/cursor-install.js");
     const { added, updated } = registerCursorHooks({ silent: true });
     if (added > 0 || updated > 0) {
-      console.log(`Clawd: synced Cursor hooks (added ${added}, updated ${updated})`);
+      console.log(`CatPaw: synced Cursor hooks (added ${added}, updated ${updated})`);
     }
   } catch (err) {
-    console.warn("Clawd: failed to sync Cursor hooks:", err.message);
+    console.warn("CatPaw: failed to sync Cursor hooks:", err.message);
+  }
+}
+
+function syncCatPawHooks() {
+  try {
+    const { registerCatPawHooks } = require("../hooks/catpaw-install.js");
+    const { added, updated } = registerCatPawHooks({ silent: true });
+    if (added > 0 || updated > 0) {
+      console.log(`CatPaw: synced CatPaw hooks (added ${added}, updated ${updated})`);
+    }
+  } catch (err) {
+    console.warn("CatPaw: failed to sync CatPaw hooks:", err.message);
   }
 }
 
 function sendStateHealthResponse(res) {
-  const body = JSON.stringify({ ok: true, app: CLAWD_SERVER_ID, port: getHookServerPort() });
+  const body = JSON.stringify({ ok: true, app: CATPAW_SERVER_ID, port: getHookServerPort() });
   res.writeHead(200, {
     "Content-Type": "application/json",
-    [CLAWD_SERVER_HEADER]: CLAWD_SERVER_ID,
+    [CATPAW_SERVER_HEADER]: CATPAW_SERVER_ID,
   });
   res.end(body);
 }
@@ -92,7 +104,7 @@ function truncateDeep(obj, depth) {
 // Watch the directory (not the file) because atomic rename replaces the inode
 // and fs.watch on the old file silently stops firing on Windows.
 let settingsWatcher = null;
-const HOOK_MARKER = "clawd-hook.js";
+const HOOK_MARKER = "claude-hook.js";
 const SETTINGS_FILENAME = "settings.json";
 function watchSettingsForHookLoss() {
   const settingsDir = path.join(os.homedir(), ".claude");
@@ -110,18 +122,18 @@ function watchSettingsForHookLoss() {
         try {
           const raw = fs.readFileSync(settingsPath, "utf-8");
           if (!raw.includes(HOOK_MARKER)) {
-            console.log("Clawd: hooks wiped from settings.json — re-registering");
+            console.log("CatPaw: hooks wiped from settings.json — re-registering");
             lastSyncTime = Date.now();
-            syncClawdHooks();
+            syncClaudeHooks();
           }
         } catch {}
       }, 1000);
     });
     settingsWatcher.on("error", (err) => {
-      console.warn("Clawd: settings watcher error:", err.message);
+      console.warn("CatPaw: settings watcher error:", err.message);
     });
   } catch (err) {
-    console.warn("Clawd: failed to watch settings directory:", err.message);
+    console.warn("CatPaw: failed to watch settings directory:", err.message);
   }
 }
 
@@ -181,7 +193,7 @@ function startHttpServer() {
             } else {
               ctx.updateSession(sid, state, event, source_pid, cwd, editor, pidChain, agentPid, agentId, host, headless, display_svg);
             }
-            res.writeHead(200, { [CLAWD_SERVER_HEADER]: CLAWD_SERVER_ID });
+            res.writeHead(200, { [CATPAW_SERVER_HEADER]: CATPAW_SERVER_ID });
             res.end("ok");
           } else {
             res.writeHead(400);
@@ -206,13 +218,13 @@ function startHttpServer() {
       req.on("end", () => {
         if (tooLarge) {
           ctx.permLog("SKIPPED: permission payload too large");
-          ctx.sendPermissionResponse(res, "deny", "Permission request too large for Clawd bubble; answer in terminal");
+          ctx.sendPermissionResponse(res, "deny", "Permission request too large for CatPaw bubble; answer in terminal");
           return;
         }
 
         if (ctx.doNotDisturb) {
           ctx.permLog("SKIPPED: DND mode");
-          ctx.sendPermissionResponse(res, "deny", "Clawd is in Do Not Disturb mode");
+          ctx.sendPermissionResponse(res, "deny", "CatPaw is in Do Not Disturb mode");
           return;
         }
 
@@ -319,10 +331,11 @@ function startHttpServer() {
   httpServer.on("listening", () => {
     activeServerPort = listenPorts[listenIndex];
     writeRuntimeConfig(activeServerPort);
-    console.log(`Clawd state server listening on 127.0.0.1:${activeServerPort}`);
-    syncClawdHooks();
+    console.log(`CatPaw state server listening on 127.0.0.1:${activeServerPort}`);
+    syncClaudeHooks();
     syncGeminiHooks();
     syncCursorHooks();
+    syncCatPawHooks();
     watchSettingsForHookLoss();
   });
 
@@ -335,6 +348,6 @@ function cleanup() {
   if (httpServer) httpServer.close();
 }
 
-return { startHttpServer, getHookServerPort, syncClawdHooks, syncGeminiHooks, syncCursorHooks, cleanup };
+return { startHttpServer, getHookServerPort, syncClaudeHooks, syncGeminiHooks, syncCursorHooks, syncCatPawHooks, cleanup };
 
 };

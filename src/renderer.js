@@ -5,7 +5,7 @@
 const container = document.getElementById("pet-container");
 
 // --- Reaction state (visual side) ---
-const REACT_DRAG_SVG = "clawd-react-drag.svg";
+const REACT_DRAG_SVG = "catpaw-react-drag.svg";
 let isReacting = false;
 let isDragReacting = false;
 let reactTimer = null;
@@ -19,9 +19,9 @@ window.electronAPI.onMiniModeChange((enabled, edge) => {
   miniLeftFlip = enabled && edge === "left";
   container.classList.toggle("mini-left", miniLeftFlip);
   if (miniLeftFlip) {
-    applyGlyphFlipCompensation(clawdEl);
+    applyGlyphFlipCompensation(catpawEl);
   } else {
-    removeGlyphFlipCompensation(clawdEl);
+    removeGlyphFlipCompensation(catpawEl);
   }
 });
 
@@ -63,7 +63,7 @@ function getObjectSvgName(objectEl) {
   return parts[parts.length - 1] || null;
 }
 
-const SVG_IDLE_FOLLOW = "clawd-idle-follow.svg";
+const SVG_IDLE_FOLLOW = "catpaw-idle-follow.svg";
 
 function shouldTrackEyes(state, svg) {
   return (state === "idle" && svg === SVG_IDLE_FOLLOW) || state === "mini-idle";
@@ -87,7 +87,7 @@ function playReaction(svgFile, durationMs) {
 
   const next = document.createElement("object");
   next.type = "image/svg+xml";
-  next.id = "clawd";
+  next.id = "catpaw";
   next.style.opacity = "0";
 
   const swap = () => {
@@ -98,7 +98,7 @@ function playReaction(svgFile, durationMs) {
       if (child !== next) child.remove();
     }
     pendingNext = null;
-    clawdEl = next;
+    catpawEl = next;
     currentDisplayedSvg = svgFile;
   };
 
@@ -139,7 +139,7 @@ function swapToSvg(svgFile) {
   if (pendingNext) { pendingNext.remove(); pendingNext = null; }
   const next = document.createElement("object");
   next.type = "image/svg+xml";
-  next.id = "clawd";
+  next.id = "catpaw";
   next.style.opacity = "0";
   const swap = () => {
     if (pendingNext !== next) return;
@@ -149,7 +149,7 @@ function swapToSvg(svgFile) {
       if (child !== next) child.remove();
     }
     pendingNext = null;
-    clawdEl = next;
+    catpawEl = next;
     currentDisplayedSvg = svgFile;
   };
   next.addEventListener("load", swap, { once: true });
@@ -186,9 +186,9 @@ function endDragReaction() {
 }
 
 // --- State change → switch SVG animation (preload + instant swap) ---
-let clawdEl = document.getElementById("clawd");
+let catpawEl = document.getElementById("catpaw");
 let pendingNext = null;
-let currentDisplayedSvg = getObjectSvgName(clawdEl);
+let currentDisplayedSvg = getObjectSvgName(catpawEl);
 currentIdleSvg = currentDisplayedSvg;
 
 window.electronAPI.onStateChange((state, svg) => {
@@ -199,9 +199,9 @@ window.electronAPI.onStateChange((state, svg) => {
     pendingNext.remove();
     pendingNext = null;
   }
-  if (clawdEl && clawdEl.isConnected && currentDisplayedSvg === svg) {
+  if (catpawEl && catpawEl.isConnected && currentDisplayedSvg === svg) {
     if (shouldTrackEyes(state, svg) && !eyeTarget) {
-      attachEyeTracking(clawdEl);
+      attachEyeTracking(catpawEl);
     } else if (!shouldTrackEyes(state, svg)) {
       detachEyeTracking();
     }
@@ -212,7 +212,7 @@ window.electronAPI.onStateChange((state, svg) => {
 
   const next = document.createElement("object");
   next.type = "image/svg+xml";
-  next.id = "clawd";
+  next.id = "catpaw";
   next.style.opacity = "0";
 
   const swap = () => {
@@ -223,7 +223,7 @@ window.electronAPI.onStateChange((state, svg) => {
       if (child !== next) child.remove();
     }
     pendingNext = null;
-    clawdEl = next;
+    catpawEl = next;
     currentDisplayedSvg = svg;
 
     if (shouldTrackEyes(state, svg)) {
@@ -324,7 +324,7 @@ window.electronAPI.onEyeMove((dx, dy) => {
     eyeTarget = null;
     bodyTarget = null;
     shadowTarget = null;
-    if (clawdEl && clawdEl.isConnected) attachEyeTracking(clawdEl);
+    if (catpawEl && catpawEl.isConnected) attachEyeTracking(catpawEl);
     return;
   }
   applyEyeMove(effectiveDx, dy);
@@ -344,9 +344,9 @@ window.electronAPI.onPlaySound((name) => {
 
 // --- Wake from doze (smooth eye opening) ---
 window.electronAPI.onWakeFromDoze(() => {
-  if (clawdEl && clawdEl.contentDocument) {
+  if (catpawEl && catpawEl.contentDocument) {
     try {
-      const eyes = clawdEl.contentDocument.getElementById("eyes-doze");
+      const eyes = catpawEl.contentDocument.getElementById("eyes-doze");
       if (eyes) eyes.style.transform = "scaleY(1)";
     } catch (e) {}
   }

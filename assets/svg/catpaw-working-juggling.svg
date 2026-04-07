@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <style>
+      /* ===== Independent sub-animations ===== */
+      .breathe {
+        transform-origin: 12px 20px;
+        animation: breathe 3.2s infinite ease-in-out;
+      }
+      .blink {
+        transform-origin: 12px 11px;
+        animation: blink 4s infinite;
+      }
+
+      /* ===== Body rock: left-right sway + micro-dip ===== */
+      .body-rock {
+        transform-origin: 12px 23px;
+        animation: rock 1.2s infinite ease-in-out;
+      }
+
+      /* ===== Shadow ===== */
+      .shadow-anim {
+        transform-origin: 12px 23.5px;
+        animation: shadow-rock 1.2s infinite ease-in-out;
+      }
+
+      /* ===== Arms: alternate catch/throw, synced with rock ===== */
+      .arm-juggle-l {
+        transform-origin: 5px 15px;
+        animation: arm-jl 1.2s infinite ease-in-out;
+      }
+      .arm-juggle-r {
+        transform-origin: 19px 15px;
+        animation: arm-jr 1.2s infinite ease-in-out;
+      }
+
+      /* ===== Eyes: track balls ===== */
+      .eye-track {
+        animation: eye-track 2.4s infinite ease-in-out;
+      }
+
+      /* ===== Juggling packets: parabolic arc ===== */
+      .packet {
+        animation: juggle 1.2s infinite;
+      }
+      .p1 { animation-delay: 0s; fill: #FF5252; }
+      .p2 { animation-delay: -0.4s; fill: #FFC107; }
+      .p3 { animation-delay: -0.8s; fill: #4CAF50; }
+
+      /* ===== Keyframes ===== */
+
+      @keyframes breathe {
+        0%, 100% { transform: scale(1, 1) translate(0, 0); }
+        50% { transform: scale(1.02, 0.98) translate(0, 0.5px); }
+      }
+
+      @keyframes blink {
+        0%, 10%, 100% { transform: scaleY(1); }
+        5% { transform: scaleY(0.1); }
+      }
+
+      /* Body: center → left-dip → center → right-dip → center */
+      @keyframes rock {
+        0%, 50%, 100% { transform: rotate(0deg) translateY(0); }
+        25% { transform: rotate(-3deg) translateY(0.3px); }
+        75% { transform: rotate(3deg) translateY(0.3px); }
+      }
+
+      /* Shadow: sway with body */
+      @keyframes shadow-rock {
+        0%, 50%, 100% { transform: scaleX(1); opacity: 0.3; }
+        25% { transform: scaleX(1.03) translateX(-0.3px); opacity: 0.35; }
+        75% { transform: scaleX(1.03) translateX(0.3px); opacity: 0.35; }
+      }
+
+      /* Left arm: up at 25% (catch left), down at 75% */
+      @keyframes arm-jl {
+        0%, 50%, 100% { transform: rotate(20deg); }
+        25% { transform: rotate(35deg); }
+        75% { transform: rotate(5deg); }
+      }
+
+      /* Right arm: down at 25%, up at 75% (catch right) */
+      @keyframes arm-jr {
+        0%, 50%, 100% { transform: rotate(-20deg); }
+        25% { transform: rotate(-5deg); }
+        75% { transform: rotate(-35deg); }
+      }
+
+      /* Eyes: track ball arc left-right */
+      @keyframes eye-track {
+        0%, 100% { transform: translate(-1px, -1px); }
+        15% { transform: translate(0, -1.5px); }
+        30% { transform: translate(1px, -1px); }
+        45% { transform: translate(1px, 0.5px); }
+        50% { transform: translate(1px, -1px); }
+        65% { transform: translate(0, -1.5px); }
+        80% { transform: translate(-1px, -1px); }
+        90% { transform: translate(-1px, 0.5px); }
+      }
+
+      /* Juggle: parabolic arc between hands */
+      @keyframes juggle {
+        0%   { transform: translate(4px, 14px); }
+        8%   { transform: translate(7px, 8px); }
+        18%  { transform: translate(10px, 3px); }
+        30%  { transform: translate(12px, 1px); }
+        42%  { transform: translate(14px, 3px); }
+        50%  { transform: translate(20px, 14px); }
+        58%  { transform: translate(17px, 8px); }
+        68%  { transform: translate(14px, 3px); }
+        80%  { transform: translate(12px, 1px); }
+        92%  { transform: translate(7px, 8px); }
+        100% { transform: translate(4px, 14px); }
+      }
+    </style>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <g id="ground-shadow" class="shadow-anim">
+    <rect x="3" y="23" width="18" height="1" fill="#000000" opacity="0.3"/>
+  </g>
+
+  <!-- Juggling Packets -->
+  <g>
+    <!-- Red ball -->
+    <g class="packet p1">
+      <circle cx="0" cy="0" r="1.2" fill="#FF5252"/>
+      <circle cx="-0.35" cy="-0.35" r="0.45" fill="#FF8A80" opacity="0.7"/>
+      <circle cx="0.3" cy="0.4" r="0.6" fill="#D32F2F" opacity="0.3"/>
+    </g>
+    <!-- Yellow ball -->
+    <g class="packet p2">
+      <circle cx="0" cy="0" r="1.2" fill="#FFC107"/>
+      <circle cx="-0.35" cy="-0.35" r="0.45" fill="#FFE082" opacity="0.7"/>
+      <circle cx="0.3" cy="0.4" r="0.6" fill="#FFA000" opacity="0.3"/>
+    </g>
+    <!-- Green ball -->
+    <g class="packet p3">
+      <circle cx="0" cy="0" r="1.2" fill="#4CAF50"/>
+      <circle cx="-0.35" cy="-0.35" r="0.45" fill="#81C784" opacity="0.7"/>
+      <circle cx="0.3" cy="0.4" r="0.6" fill="#388E3C" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- Static Legs -->
+  <g fill="#111111">
+    <rect x="7" y="21" width="2" height="2"/>
+    <rect x="15" y="21" width="2" height="2"/>
+  </g>
+
+  <!-- Upper Body -->
+  <g class="body-rock">
+    <g class="breathe">
+      <!-- Tail -->
+      <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+      <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+      <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+      <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+      <!-- Ears -->
+      <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+      <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+      <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+      <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+      
+      <!-- Head and Torso -->
+      <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+      <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+      <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+      <!-- Left Arm -->
+      <g class="arm-juggle-l">
+        <rect x="3" y="14" width="2" height="2" fill="#111111"/>
+      </g>
+
+      <!-- Right Arm -->
+      <g class="arm-juggle-r">
+        <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+      </g>
+
+      <!-- Eyes -->
+      <g class="eye-track">
+        <g class="blink">
+          <!-- Left Eye -->
+          <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+          <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+          <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+          <!-- Right Eye -->
+          <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+          <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+          <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+        </g>
+      </g>
+
+    </g>
+  </g>
+</svg>

@@ -8,7 +8,7 @@ const { registerHooks, __test } = require("../hooks/install");
 const tempDirs = [];
 
 function makeTempSettings(initialSettings = {}) {
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "clawd-install-"));
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "catpaw-install-"));
   const settingsPath = path.join(tmpDir, "settings.json");
   fs.writeFileSync(settingsPath, JSON.stringify(initialSettings, null, 2), "utf8");
   tempDirs.push(tmpDir);
@@ -19,18 +19,18 @@ function readSettings(settingsPath) {
   return JSON.parse(fs.readFileSync(settingsPath, "utf8"));
 }
 
-function getClawdCommands(settings, event) {
+function getCatPawCommands(settings, event) {
   const entries = settings.hooks?.[event];
   if (!Array.isArray(entries)) return [];
   const commands = [];
   for (const entry of entries) {
     if (!entry || typeof entry !== "object") continue;
-    if (typeof entry.command === "string" && entry.command.includes("clawd-hook.js")) {
+    if (typeof entry.command === "string" && entry.command.includes("claude-hook.js")) {
       commands.push(entry.command);
     }
     if (!Array.isArray(entry.hooks)) continue;
     for (const hook of entry.hooks) {
-      if (hook && typeof hook.command === "string" && hook.command.includes("clawd-hook.js")) {
+      if (hook && typeof hook.command === "string" && hook.command.includes("claude-hook.js")) {
         commands.push(hook.command);
       }
     }
@@ -55,7 +55,7 @@ describe("Hook installer version compatibility", () => {
 
     const settings = readSettings(settingsPath);
     assert.ok(Array.isArray(settings.hooks.StopFailure));
-    assert.deepStrictEqual(getClawdCommands(settings, "StopFailure").length, 1);
+    assert.deepStrictEqual(getCatPawCommands(settings, "StopFailure").length, 1);
     assert.strictEqual(result.versionStatus, "known");
     assert.strictEqual(result.version, "2.1.78");
   });
@@ -89,13 +89,13 @@ describe("Hook installer version compatibility", () => {
     assert.strictEqual(result.versionStatus, "unknown");
   });
 
-  it("removes stale Clawd StopFailure hooks while preserving third-party entries when version is known too old", () => {
+  it("removes stale CatPaw StopFailure hooks while preserving third-party entries when version is known too old", () => {
     const settingsPath = makeTempSettings({
       hooks: {
         StopFailure: [
           {
             matcher: "",
-            hooks: [{ type: "command", command: 'node "/tmp/clawd-hook.js" StopFailure' }],
+            hooks: [{ type: "command", command: 'node "/tmp/claude-hook.js" StopFailure' }],
           },
         ],
         PostCompact: [],
@@ -128,7 +128,7 @@ describe("Hook installer version compatibility", () => {
         StopFailure: [
           {
             matcher: "",
-            hooks: [{ type: "command", command: 'node "/tmp/clawd-hook.js" StopFailure' }],
+            hooks: [{ type: "command", command: 'node "/tmp/claude-hook.js" StopFailure' }],
           },
         ],
       },
@@ -142,7 +142,7 @@ describe("Hook installer version compatibility", () => {
 
     const settings = readSettings(settingsPath);
     assert.ok(Array.isArray(settings.hooks.StopFailure));
-    assert.strictEqual(getClawdCommands(settings, "StopFailure").length, 1);
+    assert.strictEqual(getCatPawCommands(settings, "StopFailure").length, 1);
     assert.strictEqual(result.removed, 0);
   });
 
@@ -152,7 +152,7 @@ describe("Hook installer version compatibility", () => {
         Stop: [
           {
             matcher: "",
-            hooks: [{ type: "command", command: 'node "/old/path/clawd-hook.js" Stop' }],
+            hooks: [{ type: "command", command: 'node "/old/path/claude-hook.js" Stop' }],
           },
         ],
       },
@@ -165,10 +165,10 @@ describe("Hook installer version compatibility", () => {
     });
 
     const settings = readSettings(settingsPath);
-    const commands = getClawdCommands(settings, "Stop");
+    const commands = getCatPawCommands(settings, "Stop");
     assert.strictEqual(result.updated, 1);
     assert.strictEqual(commands.length, 1);
-    assert.ok(commands[0].includes('hooks/clawd-hook.js'));
+    assert.ok(commands[0].includes('hooks/claude-hook.js'));
     assert.ok(!commands[0].includes('/old/path/'));
   });
 

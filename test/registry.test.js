@@ -3,15 +3,16 @@ const assert = require("node:assert");
 const registry = require("../agents/registry");
 
 describe("Agent Registry", () => {
-  it("should return all five agents", () => {
+  it("should return all six agents", () => {
     const agents = registry.getAllAgents();
-    assert.strictEqual(agents.length, 5);
+    assert.strictEqual(agents.length, 6);
     const ids = agents.map((a) => a.id);
     assert.ok(ids.includes("claude-code"));
     assert.ok(ids.includes("codex"));
     assert.ok(ids.includes("copilot-cli"));
     assert.ok(ids.includes("gemini-cli"));
     assert.ok(ids.includes("cursor-agent"));
+    assert.ok(ids.includes("catpaw-ide"));
   });
 
   it("should look up agents by ID", () => {

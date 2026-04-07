@@ -119,10 +119,10 @@ window.addEventListener("blur", stopDrag);
 
 // --- Click reaction logic (2-click = poke, 4-click = flail) ---
 const CLICK_WINDOW_MS = 400;
-const REACT_LEFT_SVG = "clawd-react-left.svg";
-const REACT_RIGHT_SVG = "clawd-react-right.svg";
-const REACT_ANNOYED_SVG = "clawd-react-annoyed.svg";
-const REACT_DOUBLE_SVGS = ["clawd-react-double.svg", "clawd-react-double-jump.svg"];
+const REACT_LEFT_SVG = "catpaw-react-left.svg";
+const REACT_RIGHT_SVG = "catpaw-react-right.svg";
+const REACT_ANNOYED_SVG = "catpaw-react-annoyed.svg";
+const REACT_DOUBLE_SVGS = ["catpaw-react-double.svg", "catpaw-react-double-jump.svg"];
 const REACT_SINGLE_DURATION = 2500;
 const REACT_ANNOYED_DURATION = 3500;
 const REACT_DOUBLE_DURATION = 3500;
@@ -139,7 +139,7 @@ function handleClick(clientX) {
   if (isReacting || isDragReacting) return;
 
   // Non-idle: focus terminal, no reaction
-  if (currentSvg !== "clawd-idle-follow.svg" && currentSvg !== "clawd-idle-living.svg") {
+  if (currentSvg !== "catpaw-idle-follow.svg" && currentSvg !== "catpaw-idle-living.svg") {
     window.hitAPI.focusTerminal();
     return;
   }

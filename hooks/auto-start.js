@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-// Clawd Desktop Pet — Auto-Start Script
-// Registered as a SessionStart hook BEFORE clawd-hook.js.
+// CatPaw Desktop Pet — Auto-Start Script
+// Registered as a SessionStart hook BEFORE claude-hook.js.
 // Checks if the Electron app is running; if not, launches it detached.
 // Uses shared server discovery helpers and should exit quickly in normal cases.
 
 const { spawn } = require("child_process");
 const path = require("path");
-const { discoverClawdPort } = require("./server-config");
+const { discoverCatPawPort } = require("./server-config");
 
 const TIMEOUT_MS = 300;
 
-discoverClawdPort({ timeoutMs: TIMEOUT_MS }, (port) => {
+discoverCatPawPort({ timeoutMs: TIMEOUT_MS }, (port) => {
   if (port) {
     process.exit(0);
     return;
@@ -28,9 +28,9 @@ function launchApp() {
     if (isPackaged) {
       if (isWin) {
         // __dirname: <install>/resources/app.asar.unpacked/hooks
-        // exe:       <install>/Clawd on Desk.exe
+        // exe:       <install>/CatPaw on Desk.exe
         const installDir = path.resolve(__dirname, "..", "..", "..");
-        const exe = path.join(installDir, "Clawd on Desk.exe");
+        const exe = path.join(installDir, "CatPaw on Desk.exe");
         spawn(exe, [], { detached: true, stdio: "ignore" }).unref();
       } else if (isMac) {
         // __dirname: <name>.app/Contents/Resources/app.asar.unpacked/hooks
@@ -43,7 +43,7 @@ function launchApp() {
       } else {
         // Linux packaged app:
         // AppImage: process.env.APPIMAGE holds the .AppImage file path.
-        // deb/dir:  executable is <install>/clawd-on-desk, same depth as Windows.
+        // deb/dir:  executable is <install>/catpaw-on-desk, same depth as Windows.
         //   __dirname: <install>/resources/app.asar.unpacked/hooks
         //   install:   3 levels up
         const appImage = process.env.APPIMAGE;
@@ -51,7 +51,7 @@ function launchApp() {
           spawn(appImage, [], { detached: true, stdio: "ignore" }).unref();
         } else {
           const installDir = path.resolve(__dirname, "..", "..", "..");
-          const exe = path.join(installDir, "clawd-on-desk");
+          const exe = path.join(installDir, "catpaw-on-desk");
           spawn(exe, [], { detached: true, stdio: "ignore" }).unref();
         }
       }
@@ -66,6 +66,6 @@ function launchApp() {
       }).unref();
     }
   } catch (err) {
-    process.stderr.write(`clawd auto-start: ${err.message}\n`);
+    process.stderr.write(`catpaw auto-start: ${err.message}\n`);
   }
 }

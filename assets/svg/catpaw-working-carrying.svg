@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <style>
+      .body-walk {
+        transform-origin: 12px 23px;
+        animation: walk-bounce 0.4s infinite ease-in-out;
+      }
+      .step-a { animation: step 0.4s infinite ease-in-out; }
+      .step-b { animation: step 0.4s infinite ease-in-out; animation-delay: -0.2s; }
+      .pack-swing {
+        transform-origin: 20px 14px;
+        animation: pack-swing 0.4s infinite alternate ease-in-out;
+      }
+      .arm-swing-l {
+        transform-origin: 5px 15px;
+        animation: arm-swing 0.4s infinite alternate ease-in-out;
+      }
+      .cap-sway {
+        transform-origin: 12px 10px;
+        animation: cap-sway 0.8s infinite alternate ease-in-out;
+      }
+      .shadow-walk {
+        transform-origin: 12px 23.5px;
+        animation: shadow-walk 0.4s infinite ease-in-out;
+      }
+
+      /* Eyes three-layer */
+      .eyes-gaze { animation: eyes-gaze 2.5s infinite; }
+      .eyes-rect {
+        transform-origin: 12px 11px;
+        animation: eyes-blink-rush 2.5s infinite, rect-vis 2.5s infinite step-end;
+      }
+      .eyes-xmark {
+        visibility: hidden;
+        animation: xmark-vis 2.5s infinite step-end;
+      }
+
+      /* Sweat: only during xmark period */
+      .sweat-1 { animation: sweat1-fly 2.5s infinite; }
+      .sweat-2 { animation: sweat2-fly 2.5s infinite; }
+
+      @keyframes walk-bounce {
+        0%, 50%, 100% { transform: translateY(1px); }
+        25%, 75%       { transform: translateY(0); }
+      }
+      @keyframes step {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-1px); }
+      }
+      @keyframes pack-swing {
+        0%   { transform: rotate(3deg); }
+        100% { transform: rotate(-3deg); }
+      }
+      @keyframes arm-swing {
+        0%   { transform: rotate(-8deg); }
+        100% { transform: rotate(8deg); }
+      }
+      @keyframes cap-sway {
+        0%   { transform: rotate(-3deg); }
+        100% { transform: rotate(3deg); }
+      }
+      @keyframes shadow-walk {
+        0%, 50%, 100% { transform: scale(1.03); opacity: 0.35; }
+        25%, 75%       { transform: scale(1); opacity: 0.3; }
+      }
+
+      /* Gaze: left while rushing, center during xmark */
+      @keyframes eyes-gaze {
+        0%, 15%, 88%, 100% { transform: translate(-1px, 0); }
+        25%, 80%           { transform: translate(0, 0); }
+      }
+      /* Rect blink + gate at 28% and 78% */
+      @keyframes eyes-blink-rush {
+        0%, 4%, 100%  { transform: scaleY(1); }
+        6%            { transform: scaleY(0.1); }
+        8%            { transform: scaleY(1); }
+        28%           { transform: scaleY(0.1); }
+        31%, 76%      { transform: scaleY(1); }
+        78%           { transform: scaleY(0.1); }
+        83%           { transform: scaleY(1); }
+      }
+      /* Rect hidden during xmark */
+      @keyframes rect-vis {
+        0%  { visibility: visible; }
+        29% { visibility: hidden; }
+        79% { visibility: visible; }
+      }
+      /* Xmark shown during xmark */
+      @keyframes xmark-vis {
+        0%  { visibility: hidden; }
+        29% { visibility: visible; }
+        79% { visibility: hidden; }
+      }
+
+      /* Sweat only during xmark (synced to 2.5s) */
+      @keyframes sweat1-fly {
+        0%, 27%  { transform: translate(0, 0); opacity: 0; }
+        31%      { transform: translate(0, 0); opacity: 1; }
+        55%      { transform: translate(4px, -3px); opacity: 0; }
+        100%     { opacity: 0; }
+      }
+      @keyframes sweat2-fly {
+        0%, 37%  { transform: translate(0, 0); opacity: 0; }
+        41%      { transform: translate(0, 0); opacity: 1; }
+        65%      { transform: translate(2px, -5px); opacity: 0; }
+        100%     { opacity: 0; }
+      }
+    </style>
+  </defs>
+
+  <rect class="shadow-walk" x="3" y="23" width="18" height="1" fill="#000000" opacity="0.3"/>
+
+  <g transform="rotate(-2, 12, 23)">
+  <g class="body-walk">
+    <!-- Backpack -->
+    <g class="pack-swing">
+      <rect x="19" y="11" width="4" height="6" fill="#5C9CE6"/>
+      <rect x="18" y="12" width="5" height="4" fill="#5C9CE6"/>
+      <rect x="19" y="11" width="4" height="2" fill="#3D7AC7"/>
+      <rect x="19" y="14" width="4" height="1" fill="#3D7AC7"/>
+      <rect x="19" y="16" width="4" height="1" fill="#2D5FA5"/>
+      <rect x="21" y="13" width="1" height="1" fill="#FFD54F"/>
+    </g>
+
+    <!-- Legs -->
+    <g fill="#111111">
+      <rect class="step-a" x="7" y="21" width="2" height="2"/>
+      <rect class="step-b" x="9" y="21" width="2" height="2"/>
+      <rect class="step-b" x="13" y="21" width="2" height="2"/>
+      <rect class="step-a" x="15" y="21" width="2" height="2"/>
+    </g>
+
+    <!-- Tail -->
+    <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+    <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+    <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+    <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+    <!-- Ears -->
+    <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+    <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+    <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+    <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+    
+    <!-- Head and Torso -->
+    <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+    <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+    <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+    <!-- Arms -->
+    <g class="arm-swing-l" fill="#111111">
+      <rect x="3" y="14" width="2" height="2"/>
+    </g>
+    <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+
+    <!-- Right strap -->
+    <rect x="19" y="11" width="1" height="4" fill="#3D7AC7"/>
+
+    <!-- Eyes: gaze + rect/xmark toggle -->
+    <g class="eyes-gaze">
+      <g class="eyes-rect">
+        <!-- Left Eye -->
+        <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+        <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+        <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+        <!-- Right Eye -->
+        <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+        <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+        <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+      </g>
+      <g class="eyes-xmark" fill="none" stroke="#FFFFFF"
+         stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="7,11 9,13 7,14"/>
+        <polyline points="14,11 16,13 14,14"/>
+      </g>
+    </g>
+
+    <!-- Sweat: 2 drops only during xmark -->
+    <g class="sweat-1" fill="#40C4FF">
+      <rect x="18" y="9" width="1" height="1.5"/>
+      <rect x="18.25" y="8.5" width="0.5" height="0.5"/>
+    </g>
+    <g class="sweat-2" fill="#40C4FF">
+      <rect x="20" y="8" width="1" height="1.5"/>
+      <rect x="20.25" y="7.5" width="0.5" height="0.5"/>
+    </g>
+
+    <!-- Tilted cap -->
+    <g class="cap-sway">
+      <g transform="rotate(-15, 12, 10)">
+        <rect x="7" y="5.5" width="7" height="2" fill="#5C9CE6"/>
+        <rect x="5" y="6.5" width="4" height="1" fill="#3D7AC7"/>
+        <rect x="10" y="5.5" width="1" height="1" fill="#FFD54F"/>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>

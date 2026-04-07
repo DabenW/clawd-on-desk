@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Merge Clawd Gemini CLI hooks into ~/.gemini/settings.json (append-only, idempotent)
+// Merge CatPaw Gemini CLI hooks into ~/.gemini/settings.json (append-only, idempotent)
 
 const fs = require("fs");
 const path = require("path");
@@ -33,7 +33,7 @@ function writeJsonAtomic(filePath, data) {
 }
 
 /**
- * Register Clawd hooks into ~/.gemini/settings.json
+ * Register CatPaw hooks into ~/.gemini/settings.json
  * @param {object} [options]
  * @param {boolean} [options.silent]
  * @param {string} [options.settingsPath]
@@ -45,7 +45,7 @@ function registerGeminiHooks(options = {}) {
   // Skip if ~/.gemini/ doesn't exist (Gemini CLI not installed)
   const geminiDir = path.dirname(settingsPath);
   if (!options.settingsPath && !fs.existsSync(geminiDir)) {
-    if (!options.silent) console.log("Clawd: ~/.gemini/ not found — skipping Gemini hook registration");
+    if (!options.silent) console.log("CatPaw: ~/.gemini/ not found — skipping Gemini hook registration");
     return { added: 0, skipped: 0, updated: 0 };
   }
 
@@ -101,7 +101,7 @@ function registerGeminiHooks(options = {}) {
       continue;
     }
 
-    arr.push({ type: "command", command: desiredCommand, name: "clawd" });
+    arr.push({ type: "command", command: desiredCommand, name: "catpaw" });
     added++;
     changed = true;
   }
@@ -111,7 +111,7 @@ function registerGeminiHooks(options = {}) {
   }
 
   if (!options.silent) {
-    console.log(`Clawd Gemini hooks → ${settingsPath}`);
+    console.log(`CatPaw Gemini hooks → ${settingsPath}`);
     console.log(`  Added: ${added}, updated: ${updated}, skipped: ${skipped}`);
   }
 

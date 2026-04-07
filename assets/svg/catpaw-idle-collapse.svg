@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <style>
+      /* 0.8s Collapse — One-shot transition from yawn-end to sploot */
+      .body-collapse {
+        transform-origin: 12px 23px;
+        animation: body-collapse 1s ease-in -0.2s forwards;
+      }
+
+      .shadow-collapse {
+        transform-origin: 12px 23.5px;
+        animation: shadow-collapse 1s ease-in -0.2s forwards;
+      }
+
+      .legs-collapse {
+        transform-origin: 12px 21px;
+        animation: legs-collapse 1s ease-in -0.2s forwards;
+      }
+
+      .arm-l-collapse {
+        transform-origin: 5px 15px;
+        animation: arm-l-collapse 1s ease-in -0.2s forwards;
+      }
+
+      .arm-r-collapse {
+        transform-origin: 19px 15px;
+        animation: arm-r-collapse 1s ease-in -0.2s forwards;
+      }
+
+      /* Eyes stay shut the entire time */
+      .eyes-shut {
+        transform-origin: 12px 11px;
+        transform: scaleY(0.1);
+      }
+
+      /* Body sinks and widens gently — closer to sleeping proportions */
+      @keyframes body-collapse {
+        0% { transform: scale(1.05, 0.95) translate(0, 1px); }
+        40% { transform: scale(1.08, 0.85) translate(0, 1.5px); }
+        70% { transform: scale(1.12, 0.75) translate(0, 2px); }
+        100% { transform: scale(1.15, 0.7) translate(0, 3px); }
+      }
+
+      /* Shadow widens to match sleeping shadow */
+      @keyframes shadow-collapse {
+        0% { transform: scaleX(1.05); opacity: 0.35; }
+        100% { transform: scaleX(1.3); opacity: 0.25; }
+      }
+
+      /* Legs hold still at first, then shrink into short stubs */
+      @keyframes legs-collapse {
+        0%, 40% { transform: translate(0, 0) scaleY(1); }
+        70% { transform: translate(0, -1px) scaleY(0.6); }
+        100% { transform: translate(0, -2px) scaleY(0.33); }
+      }
+
+      /* Arms slide straight down, hugging body sides */
+      @keyframes arm-l-collapse {
+        0% { transform: translate(0, 1px) rotate(-15deg); }
+        50% { transform: translate(0, 2px) rotate(-5deg); }
+        100% { transform: translate(0, 3px) rotate(0deg); }
+      }
+
+      @keyframes arm-r-collapse {
+        0% { transform: translate(0, 1px) rotate(15deg); }
+        50% { transform: translate(0, 2px) rotate(5deg); }
+        100% { transform: translate(0, 3px) rotate(0deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <rect class="shadow-collapse" x="3" y="23" width="18" height="1" fill="#000000" opacity="0.35"/>
+
+  <!-- Legs (shrink upward into short stubs) -->
+  <g class="legs-collapse" fill="#111111">
+    <rect x="7" y="21" width="2" height="2"/>
+    <rect x="15" y="21" width="2" height="2"/>
+  </g>
+
+  <!-- Body (collapses/melts down) -->
+  <g class="body-collapse">
+    <!-- Tail -->
+    <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+    <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+    <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+    <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+    <!-- Ears -->
+    <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+    <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+    <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+    <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+    
+    <!-- Head and Torso -->
+    <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+    <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+    <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+    <!-- Left Arm -->
+    <g class="arm-l-collapse">
+      <rect x="3" y="14" width="2" height="2" fill="#111111"/>
+    </g>
+    <!-- Right Arm -->
+    <g class="arm-r-collapse">
+      <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+    </g>
+    <!-- Eyes stay shut -->
+    <g class="eyes-shut" fill="#FFFFFF">
+      <!-- Left Eye -->
+      <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+      <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+      <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+      <!-- Right Eye -->
+      <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+      <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+      <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+    </g>
+  </g>
+</svg>

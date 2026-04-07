@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <clipPath id="body-clip">
+      <rect x="6" y="6" width="12" height="1" />
+      <rect x="5" y="7" width="14" height="14" />
+      <rect x="6" y="21" width="12" height="1" />
+    </clipPath>
+    <style>
+      .breathe-anim {
+        transform-origin: 12px 23px;
+        animation: breathe 3.2s infinite ease-in-out;
+      }
+
+      .eyes-blink {
+        transform-origin: 12px 11px;
+        animation: eye-blink 4s infinite ease-in-out;
+      }
+
+      #eyes-js {
+        transition: transform 0.2s ease-out;
+      }
+
+      /* Visible arm (left, facing screen) — occasional wobble */
+      .arm-wobble {
+        transform-origin: 5px 15px; /* Shoulder joint: body-side top */
+        animation: arm-wobble 25s infinite ease-in-out;
+      }
+
+      @keyframes breathe {
+        0%, 100% { transform: scale(1, 1) translate(0, 0); }
+        50% { transform: scale(1.02, 0.98) translate(0, 0.5px); }
+      }
+
+      @keyframes eye-blink {
+        0%, 10%, 100% { transform: scaleY(1); }
+        5% { transform: scaleY(0.1); }
+      }
+
+      /* Arm wobble: 25s cycle, still ~23s, quick wave in ~1.5s near the end */
+      @keyframes arm-wobble {
+        0%, 91%, 97%, 100% { transform: rotate(0deg); }
+        92% { transform: rotate(18deg); }
+        93.5% { transform: rotate(-5deg); }
+        95% { transform: rotate(14deg); }
+      }
+    </style>
+  </defs>
+
+  <!-- No shadow (against screen edge, no ground plane) -->
+
+  <!-- Entire character leaning: rotate -12° around feet base (12, 23) -->
+  <!-- Negative = counterclockwise = head tilts left toward screen = peeking pose -->
+  <g transform="rotate(-12, 12, 23)">
+
+    <!-- Legs (inside rotation group so they tilt with the body) -->
+    <g fill="#111111">
+      <rect x="7" y="21" width="2" height="2"/>
+      <rect x="15" y="21" width="2" height="2"/>
+    </g>
+
+    <!-- Upper Body (JS body-shift preserved for compatibility) -->
+    <g id="body-js">
+      <g class="breathe-anim">
+        <!-- Tail -->
+        <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+        <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+        <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+        <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+        <!-- Ears -->
+        <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+        <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+        <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+        <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+        
+        <!-- Head and Torso -->
+        <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+        <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+        <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+        <!-- Left Arm (visible side, facing screen) — extended + wobble -->
+        <g class="arm-wobble">
+          <rect x="3" y="14" width="2" height="2" fill="#111111"/>
+        </g>
+
+        <!-- Right Arm (near edge, partially hidden) — normal -->
+        <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+
+        <!-- Eyes wrapper for clipping -->
+        <g clip-path="url(#body-clip)">
+          <!-- Eyes: JS translate wrapper + CSS blink -->
+          <g id="eyes-js" fill="#FFFFFF">
+            <g class="eyes-blink">
+              <!-- Left Eye -->
+              <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+              <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+              <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+              <!-- Right Eye -->
+              <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+              <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+              <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

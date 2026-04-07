@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Clawd Desktop Pet — Copilot CLI Hook Script
+// CatPaw Desktop Pet — Copilot CLI Hook Script
 // Zero dependencies, fast cold start, 1s timeout
 // Usage: node copilot-hook.js <event_name>
 // Reads stdin JSON from Copilot CLI for sessionId (camelCase)
@@ -24,7 +24,7 @@ const state = EVENT_TO_STATE[event];
 if (!state) process.exit(0);
 
 // Walk the process tree to find the terminal app PID.
-// Shared logic with clawd-hook.js — duplicated because hook scripts must be zero-dependency.
+// Shared logic with claude-hook.js — duplicated because hook scripts must be zero-dependency.
 const TERMINAL_NAMES_WIN = new Set([
   "windowsterminal.exe", "cmd.exe", "powershell.exe", "pwsh.exe",
   "code.exe", "alacritty.exe", "wezterm-gui.exe", "mintty.exe",

@@ -4,8 +4,8 @@
 const { BrowserWindow, globalShortcut } = require("electron");
 const path = require("path");
 const {
-  CLAWD_SERVER_HEADER,
-  CLAWD_SERVER_ID,
+  CATPAW_SERVER_HEADER,
+  CATPAW_SERVER_ID,
 } = require("../hooks/server-config");
 
 const isMac = process.platform === "darwin";
@@ -285,7 +285,7 @@ function sendPermissionResponse(res, decisionOrBehavior, message, hookEventName 
   permLog(`response: ${responseBody}`);
   res.writeHead(200, {
     "Content-Type": "application/json",
-    [CLAWD_SERVER_HEADER]: CLAWD_SERVER_ID,
+    [CATPAW_SERVER_HEADER]: CATPAW_SERVER_ID,
   });
   res.end(responseBody);
 }
@@ -408,7 +408,7 @@ function cleanup() {
   // Clean up all pending permission requests — send explicit deny so Claude Code doesn't hang
   for (const perm of [...pendingPermissions]) {
     if (perm._delayTimer) clearTimeout(perm._delayTimer);
-    resolvePermissionEntry(perm, "deny", "Clawd is quitting");
+    resolvePermissionEntry(perm, "deny", "CatPaw is quitting");
   }
 }
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Clawd — Gemini CLI hook (stdin JSON with hook_event_name; stdout JSON for gating hooks)
+// CatPaw — Gemini CLI hook (stdin JSON with hook_event_name; stdout JSON for gating hooks)
 // Registered in ~/.gemini/settings.json by hooks/gemini-install.js
 
 const { postStateToRunningServer, readHostPrefix } = require("./server-config");
 
-// Gemini hook event → { state, event } for the Clawd state machine
+// Gemini hook event → { state, event } for the CatPaw state machine
 const HOOK_MAP = {
   SessionStart:  { state: "idle",         event: "SessionStart" },
   SessionEnd:    { state: "sleeping",     event: "SessionEnd" },
@@ -136,7 +136,7 @@ function finishOnce(payload) {
 
   const { state, event } = mapped;
 
-  if (hookName === "SessionStart" && !process.env.CLAWD_REMOTE) getStablePid();
+  if (hookName === "SessionStart" && !process.env.CATPAW_REMOTE) getStablePid();
 
   const sessionId = (payload && payload.session_id) || "default";
   const cwd = (payload && payload.cwd) || "";
@@ -144,7 +144,7 @@ function finishOnce(payload) {
   const body = { state, session_id: sessionId, event };
   body.agent_id = "gemini-cli";
   if (cwd) body.cwd = cwd;
-  if (process.env.CLAWD_REMOTE) {
+  if (process.env.CATPAW_REMOTE) {
     body.host = readHostPrefix();
   } else {
     body.source_pid = getStablePid();

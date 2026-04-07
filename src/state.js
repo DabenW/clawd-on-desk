@@ -7,37 +7,37 @@ const path = require("path");
 module.exports = function initState(ctx) {
 
 // ── SVG filename constants ──
-const SVG_IDLE_FOLLOW = "clawd-idle-follow.svg";
-const SVG_IDLE_LOOK = "clawd-idle-look.svg";
-const SVG_IDLE_LIVING = "clawd-idle-living.svg";
+const SVG_IDLE_FOLLOW = "catpaw-idle-follow.svg";
+const SVG_IDLE_LOOK = "catpaw-idle-look.svg";
+const SVG_IDLE_LIVING = "catpaw-idle-living.svg";
 
 // ── State → SVG mapping ──
 const STATE_SVGS = {
-  idle: [SVG_IDLE_FOLLOW, "clawd-working-debugger.svg", "clawd-idle-reading.svg"],
-  yawning: ["clawd-idle-yawn.svg"],
-  dozing: ["clawd-idle-doze.svg"],
-  collapsing: ["clawd-collapse-sleep.svg"],
-  thinking: ["clawd-working-thinking.svg"],
-  working: ["clawd-working-typing.svg"],
-  juggling: ["clawd-working-juggling.svg"],
-  sweeping: ["clawd-working-sweeping.svg"],
-  error: ["clawd-error.svg"],
-  attention: ["clawd-happy.svg"],
-  notification: ["clawd-notification.svg"],
-  carrying: ["clawd-working-carrying.svg"],
-  sleeping: ["clawd-sleeping.svg"],
-  waking: ["clawd-wake.svg"],
+  idle: [SVG_IDLE_FOLLOW, "catpaw-working-debugger.svg", "catpaw-idle-reading.svg"],
+  yawning: ["catpaw-idle-yawn.svg"],
+  dozing: ["catpaw-idle-doze.svg"],
+  collapsing: ["catpaw-collapse-sleep.svg"],
+  thinking: ["catpaw-working-thinking.svg"],
+  working: ["catpaw-working-typing.svg"],
+  juggling: ["catpaw-working-juggling.svg"],
+  sweeping: ["catpaw-working-sweeping.svg"],
+  error: ["catpaw-error.svg"],
+  attention: ["catpaw-happy.svg"],
+  notification: ["catpaw-notification.svg"],
+  carrying: ["catpaw-working-carrying.svg"],
+  sleeping: ["catpaw-sleeping.svg"],
+  waking: ["catpaw-wake.svg"],
 };
 
 // Mini mode SVG mappings
-STATE_SVGS["mini-idle"]  = ["clawd-mini-idle.svg"];
-STATE_SVGS["mini-alert"] = ["clawd-mini-alert.svg"];
-STATE_SVGS["mini-happy"] = ["clawd-mini-happy.svg"];
-STATE_SVGS["mini-enter"] = ["clawd-mini-enter.svg"];
-STATE_SVGS["mini-peek"]  = ["clawd-mini-peek.svg"];
-STATE_SVGS["mini-crabwalk"] = ["clawd-mini-crabwalk.svg"];
-STATE_SVGS["mini-enter-sleep"] = ["clawd-mini-enter-sleep.svg"];
-STATE_SVGS["mini-sleep"] = ["clawd-mini-sleep.svg"];
+STATE_SVGS["mini-idle"]  = ["catpaw-mini-idle.svg"];
+STATE_SVGS["mini-alert"] = ["catpaw-mini-alert.svg"];
+STATE_SVGS["mini-happy"] = ["catpaw-mini-happy.svg"];
+STATE_SVGS["mini-enter"] = ["catpaw-mini-enter.svg"];
+STATE_SVGS["mini-peek"]  = ["catpaw-mini-peek.svg"];
+STATE_SVGS["mini-crabwalk"] = ["catpaw-mini-crabwalk.svg"];
+STATE_SVGS["mini-enter-sleep"] = ["catpaw-mini-enter-sleep.svg"];
+STATE_SVGS["mini-sleep"] = ["catpaw-mini-sleep.svg"];
 
 const MIN_DISPLAY_MS = {
   attention: 4000,
@@ -75,13 +75,13 @@ const ONESHOT_STATES = new Set(["attention", "error", "sweeping", "notification"
 
 // Session display hints (e.g. Cursor tool_name → svg); basename only, allowlisted
 const DISPLAY_HINT_SVGS = new Set([
-  "clawd-working-typing.svg",
-  "clawd-working-building.svg",
-  "clawd-working-juggling.svg",
-  "clawd-working-conducting.svg",
-  "clawd-idle-reading.svg",
-  "clawd-working-debugger.svg",
-  "clawd-working-thinking.svg",
+  "catpaw-working-typing.svg",
+  "catpaw-working-building.svg",
+  "catpaw-working-juggling.svg",
+  "catpaw-working-conducting.svg",
+  "catpaw-idle-reading.svg",
+  "catpaw-working-debugger.svg",
+  "catpaw-working-thinking.svg",
 ]);
 
 // ── Session tracking ──
@@ -98,7 +98,7 @@ const HIT_BOXES = {
   sleeping: { x: -2, y: 9, w: 19, h: 7 },
   wide:     { x: -3, y: 3, w: 21, h: 14 },
 };
-const WIDE_SVGS = new Set(["clawd-error.svg", "clawd-notification.svg", "clawd-working-conducting.svg"]);
+const WIDE_SVGS = new Set(["catpaw-error.svg", "catpaw-notification.svg", "catpaw-working-conducting.svg"]);
 let currentHitBox = HIT_BOXES.default;
 
 // ── State machine internal ──
@@ -215,7 +215,7 @@ function applyState(state, svgOverride) {
   }
 
   // Update hit box based on SVG
-  if (svg === "clawd-sleeping.svg" || svg === "clawd-collapse-sleep.svg") {
+  if (svg === "catpaw-sleeping.svg" || svg === "catpaw-collapse-sleep.svg") {
     currentHitBox = HIT_BOXES.sleeping;
   } else if (WIDE_SVGS.has(svg)) {
     currentHitBox = HIT_BOXES.wide;
@@ -519,9 +519,9 @@ function getActiveWorkingCount() {
 
 function getWorkingSvg() {
   const n = getActiveWorkingCount();
-  if (n >= 3) return "clawd-working-building.svg";
-  if (n >= 2) return "clawd-working-juggling.svg";
-  return "clawd-working-typing.svg";
+  if (n >= 3) return "catpaw-working-building.svg";
+  if (n >= 2) return "catpaw-working-juggling.svg";
+  return "catpaw-working-typing.svg";
 }
 
 function getWinningSessionDisplaySvg(targetState) {
@@ -564,7 +564,7 @@ function getJugglingSvg() {
   for (const [, s] of sessions) {
     if (!s.headless && s.state === "juggling") n++;
   }
-  return n >= 2 ? "clawd-working-conducting.svg" : "clawd-working-juggling.svg";
+  return n >= 2 ? "catpaw-working-conducting.svg" : "catpaw-working-juggling.svg";
 }
 
 // ── Session Dashboard ──

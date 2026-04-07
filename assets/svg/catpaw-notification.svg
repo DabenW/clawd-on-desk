@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 45 45" width="500" height="500">
+  <defs>
+    <style>
+      /* 3.5s loop: startle + 4 decaying jumps */
+
+      .body-anim {
+        transform-origin: 12px 23px;
+        animation: body-jump 3.5s infinite ease-in-out;
+      }
+
+      .shadow-anim {
+        transform-origin: 12px 23.5px;
+        animation: shadow-pulse 3.5s infinite ease-in-out;
+      }
+
+      .eyes-look {
+        transform-origin: 12px 11px;
+        animation: eye-track 3.5s infinite ease-in-out;
+      }
+
+      .arm-l {
+        transform-origin: 5px 15px;
+        animation: arm-wave-l 3.5s infinite ease-in-out;
+      }
+      .arm-r {
+        transform-origin: 19px 15px;
+        animation: arm-wave-r 3.5s infinite ease-in-out;
+      }
+
+      .alert-pop {
+        transform-origin: 24px -1px;
+        animation: alert-flash 3.5s infinite ease-in-out;
+        opacity: 0;
+      }
+
+      /* --- Keyframes --- */
+
+      @keyframes body-jump {
+        0%          { transform: translate(0, 0) scale(1, 1); }
+        3%          { transform: translate(-1.5px, -1px) scale(1.03, 0.97); }
+        10%         { transform: translate(-1.5px, -1px) scale(1.03, 0.97); }
+        15%         { transform: translate(0, 1.5px) scale(1.05, 0.96); }
+        20%         { transform: translate(0, -10px) scale(0.96, 1.04); }
+        25%         { transform: translate(0, 1.5px) scale(1.05, 0.96); }
+        30%         { transform: translate(0, -8px) scale(0.97, 1.03); }
+        35%         { transform: translate(0, 1.2px) scale(1.04, 0.97); }
+        40%         { transform: translate(0, -5px) scale(0.98, 1.02); }
+        45%         { transform: translate(0, 1px) scale(1.03, 0.98); }
+        50%         { transform: translate(0, -3px) scale(0.99, 1.01); }
+        55%         { transform: translate(0, 0.5px) scale(1.01, 0.99); }
+        62%, 100%   { transform: translate(0, 0) scale(1, 1); }
+      }
+
+      @keyframes shadow-pulse {
+        0%              { transform: scale(1); opacity: 0.3; }
+        3%, 10%         { transform: translate(-1.5px, 0) scale(1); opacity: 0.3; }
+        15%             { transform: scale(1.1); opacity: 0.35; }
+        20%             { transform: scale(0.5); opacity: 0.05; }
+        25%             { transform: scale(1.12); opacity: 0.35; }
+        30%             { transform: scale(0.55); opacity: 0.08; }
+        35%             { transform: scale(1.1); opacity: 0.32; }
+        40%             { transform: scale(0.65); opacity: 0.1; }
+        45%             { transform: scale(1.06); opacity: 0.3; }
+        50%             { transform: scale(0.75); opacity: 0.15; }
+        55%             { transform: scale(1.03); opacity: 0.3; }
+        62%, 100%       { transform: scale(1); opacity: 0.3; }
+      }
+
+      @keyframes eye-track {
+        0%          { transform: translate(0, 0) scaleY(1); }
+        3%          { transform: translate(4px, 0) scaleY(0.3); }
+        6%          { transform: translate(4px, 0) scaleY(1); }
+        10%         { transform: translate(4px, 0) scaleY(1); }
+        15%, 100%   { transform: translate(0, 0) scaleY(1); }
+      }
+
+      @keyframes arm-wave-l {
+        0%          { transform: rotate(0deg); }
+        3%, 10%     { transform: rotate(25deg); }
+        15%         { transform: rotate(30deg); }
+        20%         { transform: rotate(155deg); }
+        25%         { transform: rotate(115deg); }
+        30%         { transform: rotate(140deg); }
+        35%         { transform: rotate(100deg); }
+        40%         { transform: rotate(115deg); }
+        45%         { transform: rotate(80deg); }
+        50%         { transform: rotate(80deg); }
+        55%         { transform: rotate(40deg); }
+        62%, 100%   { transform: rotate(0deg); }
+      }
+
+      @keyframes arm-wave-r {
+        0%          { transform: rotate(0deg); }
+        3%, 10%     { transform: rotate(-30deg); }
+        15%         { transform: rotate(-30deg); }
+        20%         { transform: rotate(-155deg); }
+        25%         { transform: rotate(-115deg); }
+        30%         { transform: rotate(-140deg); }
+        35%         { transform: rotate(-100deg); }
+        40%         { transform: rotate(-115deg); }
+        45%         { transform: rotate(-80deg); }
+        50%         { transform: rotate(-80deg); }
+        55%         { transform: rotate(-40deg); }
+        62%, 100%   { transform: rotate(0deg); }
+      }
+
+      @keyframes alert-flash {
+        0%          { opacity: 0; transform: scale(0.3); }
+        3%          { opacity: 1; transform: scale(1.3); }
+        10%         { opacity: 1; transform: scale(1); }
+        50%         { opacity: 1; transform: scale(1); }
+        55%         { opacity: 0.7; transform: scale(0.9); }
+        62%         { opacity: 0; transform: scale(0.6); }
+        100%        { opacity: 0; transform: scale(0.6); }
+      }
+    </style>
+  </defs>
+
+  <!-- Mirrored character -->
+  <g transform="translate(24, 0) scale(-1, 1)">
+    <rect class="shadow-anim" x="3" y="23" width="18" height="1" fill="#000000" opacity="0.3"/>
+
+    <g class="body-anim">
+      <!-- Legs -->
+      <g id="legs" fill="#111111">
+        <rect x="7" y="21" width="2" height="2"/>
+        <rect x="15" y="21" width="2" height="2"/>
+      </g>
+
+      <!-- Tail -->
+      <rect x="19" y="18" width="2" height="2" fill="#111111"/>
+      <rect x="21" y="15" width="2" height="4" fill="#111111"/>
+      <rect x="22" y="12" width="2" height="4" fill="#111111"/>
+      <rect x="23" y="9" width="2" height="4" fill="#111111"/>
+
+      <!-- Ears -->
+      <rect x="6" y="3" width="2" height="4" fill="#111111"/>
+      <rect x="7" y="2" width="1" height="1" fill="#111111"/>
+      <rect x="16" y="3" width="2" height="4" fill="#111111"/>
+      <rect x="16" y="2" width="1" height="1" fill="#111111"/>
+      
+      <!-- Head and Torso -->
+      <rect x="6" y="6" width="12" height="1" fill="#111111"/>
+      <rect x="5" y="7" width="14" height="14" fill="#111111"/>
+      <rect x="6" y="21" width="12" height="1" fill="#111111"/>
+
+      <!-- Arms -->
+      <g class="arm-l">
+        <rect x="3" y="14" width="2" height="2" fill="#111111"/>
+      </g>
+      <g class="arm-r">
+        <rect x="19" y="14" width="2" height="2" fill="#111111"/>
+      </g>
+
+      <!-- Eyes -->
+      <g class="eyes-look">
+        <!-- Left Eye -->
+        <rect x="6" y="10" width="5" height="3" fill="#FFFFFF"/>
+        <rect x="7" y="13" width="3" height="1" fill="#FFFFFF"/>
+        <rect x="8" y="10" width="2" height="2" fill="#111111"/>
+
+        <!-- Right Eye -->
+        <rect x="13" y="10" width="5" height="3" fill="#FFFFFF"/>
+        <rect x="14" y="13" width="3" height="1" fill="#FFFFFF"/>
+        <rect x="14" y="10" width="2" height="2" fill="#111111"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Exclamation mark (screen coords, not mirrored) -->
+  <g class="alert-pop" fill="#FF3D00">
+    <rect x="23" y="-6" width="2" height="5"/>
+    <rect x="23" y="0" width="2" height="2"/>
+  </g>
+</svg>

@@ -18,7 +18,7 @@ function getAutoUpdater() {
       ctx.updateLog("Auto-updater initialized successfully");
     } catch (err) {
       const errMsg = `electron-updater load failed: ${err.message}`;
-      console.warn("Clawd:", errMsg);
+      console.warn("CatPaw:", errMsg);
       ctx.updateLog(`ERROR: ${errMsg}`);
       ctx.updateLog(`Stack: ${err.stack}`);
       return null;
@@ -64,7 +64,7 @@ function setupAutoUpdater() {
       }).then(({ response }) => {
         if (response === 0) {
           ctx.updateLog("User chose to download, opening GitHub Releases");
-          shell.openExternal("https://github.com/rullerzhou-afk/clawd-on-desk/releases/latest");
+          shell.openExternal("https://github.com/rullerzhou-afk/catpaw-on-desk/releases/latest");
         } else {
           ctx.updateLog("User chose to download later");
         }
@@ -201,9 +201,9 @@ function fetchLatestVersion() {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'api.github.com',
-      path: '/repos/rullerzhou-afk/clawd-on-desk/releases/latest',
+      path: '/repos/rullerzhou-afk/catpaw-on-desk/releases/latest',
       headers: {
-        'User-Agent': 'Clawd-on-Desk'
+        'User-Agent': 'CatPaw-on-Desk'
       }
     };
 

@@ -19,14 +19,14 @@ let mainTickTimer = null;
 
 const MOUSE_IDLE_TIMEOUT = 20000;   // 20s → idle-look
 const MOUSE_SLEEP_TIMEOUT = 60000;  // 60s → yawning → dozing
-const SVG_IDLE_FOLLOW = "clawd-idle-follow.svg";
-const SVG_IDLE_LOOK = "clawd-idle-look.svg";
+const SVG_IDLE_FOLLOW = "catpaw-idle-follow.svg";
+const SVG_IDLE_LOOK = "catpaw-idle-look.svg";
 
 // Random idle animations: picked when mouse is still for 20s
 const IDLE_ANIMS = [
   { svg: SVG_IDLE_LOOK, duration: 6500 },
-  { svg: "clawd-working-debugger.svg", duration: 14000 },
-  { svg: "clawd-idle-reading.svg", duration: 14000 },
+  { svg: "catpaw-working-debugger.svg", duration: 14000 },
+  { svg: "catpaw-idle-reading.svg", duration: 14000 },
 ];
 
 // ── Unified main tick (cursor polling for eye tracking + sleep + mini peek) ──

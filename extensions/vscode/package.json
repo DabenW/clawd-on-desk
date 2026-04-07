@@ -1,7 +1,7 @@
 {
   "name": "clawd-terminal-focus",
-  "displayName": "Clawd Terminal Focus",
-  "description": "Enables Clawd desktop pet to focus the correct terminal tab via URI",
+  "displayName": "CatPaw Terminal Focus",
+  "description": "Enables CatPaw desktop pet to focus the correct terminal tab via URI",
   "version": "0.1.0",
   "publisher": "clawd",
   "engines": {

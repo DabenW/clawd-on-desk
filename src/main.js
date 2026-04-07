@@ -20,7 +20,7 @@ if (isWin) {
     const user32 = koffi.load("user32.dll");
     _allowSetForeground = user32.func("bool __stdcall AllowSetForegroundWindow(int dwProcessId)");
   } catch (err) {
-    console.warn("Clawd: koffi/AllowSetForegroundWindow not available:", err.message);
+    console.warn("CatPaw: koffi/AllowSetForegroundWindow not available:", err.message);
   }
 }
 
@@ -35,7 +35,7 @@ const SIZES = {
 let lang = "en";
 
 // ── Position persistence ──
-const PREFS_PATH = path.join(app.getPath("userData"), "clawd-prefs.json");
+const PREFS_PATH = path.join(app.getPath("userData"), "catpaw-prefs.json");
 
 function loadPrefs() {
   try {
@@ -62,14 +62,14 @@ function savePrefs() {
     x, y, size: currentSize,
     miniMode: _mini.getMiniMode(), miniEdge: _mini.getMiniEdge(), preMiniX: _mini.getPreMiniX(), preMiniY: _mini.getPreMiniY(), lang,
     showTray, showDock,
-    autoStartWithClaude, bubbleFollowPet, hideBubbles, showSessionId, soundMuted,
+    autoStartWithClaude, autoStartWithCatPaw, bubbleFollowPet, hideBubbles, showSessionId, soundMuted,
   };
   try { fs.writeFileSync(PREFS_PATH, JSON.stringify(data)); } catch {}
 }
 
 let _codexMonitor = null;          // Codex CLI JSONL log polling instance
 
-// ── CSS <object> sizing (mirrors styles.css #clawd) ──
+// ── CSS <object> sizing (mirrors styles.css #catpaw) ──
 const OBJ_SCALE_W = 1.9;   // width: 190%
 const OBJ_SCALE_H = 1.3;   // height: 130%
 const OBJ_OFF_X   = -0.45; // left: -45%
@@ -95,6 +95,7 @@ let isQuitting = false;
 let showTray = true;
 let showDock = true;
 let autoStartWithClaude = false;
+let autoStartWithCatPaw = false;
 let bubbleFollowPet = false;
 let hideBubbles = false;
 let showSessionId = false;
@@ -139,7 +140,7 @@ function registerToggleShortcut() {
   try {
     globalShortcut.register(DEFAULT_TOGGLE_SHORTCUT, togglePetVisibility);
   } catch (err) {
-    console.warn("Clawd: failed to register global shortcut:", err.message);
+    console.warn("CatPaw: failed to register global shortcut:", err.message);
   }
 }
 
@@ -347,7 +348,7 @@ const _serverCtx = {
   permLog,
 };
 const _server = require("./server")(_serverCtx);
-const { startHttpServer, getHookServerPort, syncClawdHooks } = _server;
+const { startHttpServer, getHookServerPort, syncClaudeHooks } = _server;
 
 // ── alwaysOnTop recovery (Windows DWM / Shell can strip TOPMOST flag) ──
 // The "always-on-top-changed" event only fires from Electron's own SetAlwaysOnTop
@@ -435,6 +436,8 @@ const _menuCtx = {
   set showDock(v) { showDock = v; },
   get autoStartWithClaude() { return autoStartWithClaude; },
   set autoStartWithClaude(v) { autoStartWithClaude = v; },
+  get autoStartWithCatPaw() { return autoStartWithCatPaw; },
+  set autoStartWithCatPaw(v) { autoStartWithCatPaw = v; },
   get bubbleFollowPet() { return bubbleFollowPet; },
   set bubbleFollowPet(v) { bubbleFollowPet = v; },
   get hideBubbles() { return hideBubbles; },
@@ -498,6 +501,7 @@ function createWindow() {
     if (typeof prefs.showDock === "boolean") showDock = prefs.showDock;
   }
   if (prefs && typeof prefs.autoStartWithClaude === "boolean") autoStartWithClaude = prefs.autoStartWithClaude;
+  if (prefs && typeof prefs.autoStartWithCatPaw === "boolean") autoStartWithCatPaw = prefs.autoStartWithCatPaw;
   if (prefs && typeof prefs.bubbleFollowPet === "boolean") bubbleFollowPet = prefs.bubbleFollowPet;
   if (prefs && typeof prefs.hideBubbles === "boolean") hideBubbles = prefs.hideBubbles;
   if (prefs && typeof prefs.showSessionId === "boolean") showSessionId = prefs.showSessionId;
@@ -560,7 +564,7 @@ function createWindow() {
     });
     win.on("unresponsive", () => {
       if (isQuitting) return;
-      console.warn("Clawd: renderer unresponsive — reloading");
+      console.warn("CatPaw: renderer unresponsive — reloading");
       win.webContents.reload();
     });
   }
@@ -740,7 +744,7 @@ function createWindow() {
       const resolved = resolveDisplayState();
       applyState(resolved, getSvgOverride(resolved));
     } else {
-      applyState("idle", "clawd-idle-follow.svg");
+      applyState("idle", "catpaw-idle-follow.svg");
       // Startup recovery: delay 5s to let HWND/z-order/drag systems stabilize,
       // then detect running Claude Code processes → suppress sleep sequence
       setTimeout(() => {
@@ -854,7 +858,7 @@ Object.defineProperties(this || {}, {}); // no-op placeholder
 // Mini state is accessed via _mini getters in ctx objects below
 
 // ── Auto-install VS Code / Cursor terminal-focus extension ──
-const EXT_ID = "clawd.clawd-terminal-focus";
+const EXT_ID = "catpaw.catpaw-terminal-focus";
 const EXT_VERSION = "0.1.0";
 const EXT_DIR_NAME = `${EXT_ID}-${EXT_VERSION}`;
 
@@ -867,7 +871,7 @@ function installTerminalFocusExtension() {
   extSrc = extSrc.replace("app.asar" + path.sep, "app.asar.unpacked" + path.sep);
 
   if (!fs.existsSync(extSrc)) {
-    console.log("Clawd: terminal-focus extension source not found, skipping auto-install");
+    console.log("CatPaw: terminal-focus extension source not found, skipping auto-install");
     return;
   }
 
@@ -890,13 +894,13 @@ function installTerminalFocusExtension() {
         fs.copyFileSync(path.join(extSrc, file), path.join(dest, file));
       }
       installed++;
-      console.log(`Clawd: installed terminal-focus extension to ${dest}`);
+      console.log(`CatPaw: installed terminal-focus extension to ${dest}`);
     } catch (err) {
-      console.warn(`Clawd: failed to install extension to ${dest}:`, err.message);
+      console.warn(`CatPaw: failed to install extension to ${dest}:`, err.message);
     }
   }
   if (installed > 0) {
-    console.log(`Clawd: terminal-focus extension installed to ${installed} editor(s). Restart VS Code/Cursor to activate.`);
+    console.log(`CatPaw: terminal-focus extension installed to ${installed} editor(s). Restart VS Code/Cursor to activate.`);
   }
 }
 
@@ -935,7 +939,7 @@ if (!gotTheLock) {
     registerToggleShortcut();
 
     // Auto-register Claude Code hooks on every launch (dedup-safe)
-    syncClawdHooks();
+    syncClaudeHooks();
 
     // Start Codex CLI JSONL log monitor
     try {
@@ -956,12 +960,12 @@ if (!gotTheLock) {
       });
       _codexMonitor.start();
     } catch (err) {
-      console.warn("Clawd: Codex log monitor not started:", err.message);
+      console.warn("CatPaw: Codex log monitor not started:", err.message);
     }
 
     // Auto-install VS Code/Cursor terminal-focus extension
     try { installTerminalFocusExtension(); } catch (err) {
-      console.warn("Clawd: failed to auto-install terminal-focus extension:", err.message);
+      console.warn("CatPaw: failed to auto-install terminal-focus extension:", err.message);
     }
 
     // Auto-updater: setup event handlers + silent check after 5s

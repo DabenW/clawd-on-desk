@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Clawd Desktop Pet — Hook Installer
+// CatPaw Desktop Pet — Hook Installer
 // Safely merges hook commands into ~/.claude/settings.json
 // Does NOT overwrite existing hooks — appends to arrays
 
@@ -95,7 +95,7 @@ function getClaudeVersion(options = {}) {
   return { ...UNKNOWN_CLAUDE_VERSION };
 }
 
-const MARKER = "clawd-hook.js";
+const MARKER = "claude-hook.js";
 const AUTO_START_MARKER = "auto-start.js";
 const LEGACY_AUTO_START_MARKER = "auto-start.sh";
 const HTTP_MARKER = PERMISSION_PATH;
@@ -289,7 +289,7 @@ function reconcileVersionedHooks(settings, supportedEvents, versionInfo) {
 }
 
 /**
- * Register Clawd hooks into ~/.claude/settings.json.
+ * Register CatPaw hooks into ~/.claude/settings.json.
  * Safe to call multiple times — skips already-registered hooks.
  * @param {object} [options]
  * @param {boolean} [options.silent] - suppress console output (for auto-registration)
@@ -301,7 +301,7 @@ function reconcileVersionedHooks(settings, supportedEvents, versionInfo) {
 function registerHooks(options = {}) {
   const settingsPath = options.settingsPath || path.join(os.homedir(), ".claude", "settings.json");
   const hookPort = getHookServerPort(options.port);
-  let hookScript = path.resolve(__dirname, "clawd-hook.js").replace(/\\/g, "/");
+  let hookScript = path.resolve(__dirname, "claude-hook.js").replace(/\\/g, "/");
   // In packaged builds, __dirname points to app.asar (virtual); the actual
   // unpacked file lives under app.asar.unpacked (see package.json asarUnpack).
   hookScript = hookScript.replace("app.asar/", "app.asar.unpacked/");
@@ -355,9 +355,9 @@ function registerHooks(options = {}) {
     }
 
     // Check if our hook is already registered (search nested hooks arrays too)
-    // Remote mode: prepend CLAWD_REMOTE=1 so the hook skips PID collection
+    // Remote mode: prepend CATPAW_REMOTE=1 so the hook skips PID collection
     const desiredCommand = options.remote
-      ? `CLAWD_REMOTE=1 "${nodeBin}" "${hookScript}" ${event}`
+      ? `CATPAW_REMOTE=1 "${nodeBin}" "${hookScript}" ${event}`
       : `"${nodeBin}" "${hookScript}" ${event}`;
     const commandSync = syncCommandHook(settings.hooks[event], MARKER, desiredCommand);
     if (commandSync.found) {
@@ -396,7 +396,7 @@ function registerHooks(options = {}) {
     const autoStartCommand = `"${nodeBin}" "${autoStartScript}"`;
     const autoStartSync = syncCommandHook(settings.hooks.SessionStart, AUTO_START_MARKER, autoStartCommand);
     if (!autoStartSync.found) {
-      // Insert at index 0 — must run BEFORE clawd-hook.js so the app is starting
+      // Insert at index 0 — must run BEFORE claude-hook.js so the app is starting
       settings.hooks.SessionStart.unshift({
         matcher: "",
         hooks: [{ type: "command", command: autoStartCommand }],
@@ -472,7 +472,7 @@ function registerHooks(options = {}) {
   if (!options.silent) {
     const versionLabel = versionInfo.status === "known" ? versionInfo.version : "unknown";
     const versionSource = versionInfo.source || "unavailable";
-    console.log(`Clawd hooks installed to ${settingsPath}`);
+    console.log(`CatPaw hooks installed to ${settingsPath}`);
     console.log(`  Claude Code version: ${versionLabel}`);
     console.log(`  Detection source: ${versionSource}`);
     if (versionInfo.status === "unknown") {

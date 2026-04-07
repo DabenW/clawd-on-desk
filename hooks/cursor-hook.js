@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Clawd — Cursor Agent hook (stdin JSON, hook_event_name; stdout JSON for gating hooks)
+// CatPaw — Cursor Agent hook (stdin JSON, hook_event_name; stdout JSON for gating hooks)
 // Registered in ~/.cursor/hooks.json by hooks/cursor-install.js
 
 const { postStateToRunningServer, readHostPrefix } = require("./server-config");
@@ -120,10 +120,10 @@ function displaySvgFromToolHook(hookName, payload) {
   if (hookName !== "preToolUse" && hookName !== "postToolUse") return undefined;
   const name = payload && payload.tool_name;
   if (!name || typeof name !== "string") return undefined;
-  if (name === "Shell" || name.startsWith("MCP:")) return "clawd-working-building.svg";
-  if (name === "Task") return "clawd-working-juggling.svg";
-  if (name === "Write" || name === "Delete") return "clawd-working-typing.svg";
-  if (name === "Read" || name === "Grep") return "clawd-idle-reading.svg";
+  if (name === "Shell" || name.startsWith("MCP:")) return "catpaw-working-building.svg";
+  if (name === "Task") return "catpaw-working-juggling.svg";
+  if (name === "Write" || name === "Delete") return "catpaw-working-typing.svg";
+  if (name === "Read" || name === "Grep") return "catpaw-idle-reading.svg";
   return undefined;
 }
 
@@ -148,7 +148,7 @@ function runWithPayload(payload) {
   }
 
   const { state, event } = mapped;
-  if (hookNameResolved === "sessionStart" && !process.env.CLAWD_REMOTE) getStablePid();
+  if (hookNameResolved === "sessionStart" && !process.env.CATPAW_REMOTE) getStablePid();
 
   const sessionId =
     (payload && (payload.conversation_id || payload.session_id)) || "default";
@@ -162,7 +162,7 @@ function runWithPayload(payload) {
   const hint = displaySvgFromToolHook(hookNameResolved, payload);
   if (hint !== undefined) body.display_svg = hint;
   if (cwd) body.cwd = cwd;
-  if (process.env.CLAWD_REMOTE) {
+  if (process.env.CATPAW_REMOTE) {
     body.host = readHostPrefix();
   } else {
     body.source_pid = getStablePid();
