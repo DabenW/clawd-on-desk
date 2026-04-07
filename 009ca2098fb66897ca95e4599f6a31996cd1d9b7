@@ -1,0 +1,71 @@
+src/menu.js
+  87c4913999a6872d 68,118,311-321
+src/main.js
+  87c4913999a6872d 65,98,439-440,504
+package.json
+  87c4913999a6872d 6,8,17-18,94-96,108
+hooks/catpaw-hook.js
+  87c4913999a6872d 1,3-5,7-8,10-83,88-107,109-111,113-123,125-130,132-139,141-150,152-185,187-243
+AGENTS.md
+  627fd1f05bd6e34c 1-304
+hooks/catpaw-install.js
+  87c4913999a6872d 1,3-84,86-145,147-164,166-187,189-242
+src/server.js
+  87c4913999a6872d 67-71,73-74,338
+LICENSE
+  87c4913999a6872d 3-4
+agents/catpaw.js
+  87c4913999a6872d 1-35
+agents/registry.js
+  87c4913999a6872d 9,11
+src/updater.js
+  87c4913999a6872d 206
+test/registry.test.js
+  87c4913999a6872d 6,8,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "009ca2098fb66897ca95e4599f6a31996cd1d9b7",
+  "prompts": {
+    "5283c1db7cbb49f4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d5119-7984-7632-9ef4-df0808bafc06",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "wangdaben",
+      "messages": [],
+      "total_additions": 52,
+      "total_deletions": 52,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "627fd1f05bd6e34c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d511a-71fd-7431-8a2a-5b25f845d195",
+        "model": "unknown"
+      },
+      "human_author": "wangdaben",
+      "messages": [],
+      "total_additions": 304,
+      "total_deletions": 0,
+      "accepted_lines": 304,
+      "overriden_lines": 0
+    },
+    "87c4913999a6872d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "bbb92da7-cdc4-4a58-896c-ef537e63a3a7",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "wangdaben",
+      "messages": [],
+      "total_additions": 3081,
+      "total_deletions": 1638,
+      "accepted_lines": 563,
+      "overriden_lines": 23
+    }
+  }
+}
